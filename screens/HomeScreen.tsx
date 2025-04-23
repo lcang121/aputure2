@@ -19,8 +19,11 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootState, AppDispatch } from '../store';
 import { RootStackParamList } from '../App';
 import EmptyState from '../components/EmptyState';
+import moment from 'moment';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+const aputureThemeColor = '#ec5f5f';
 
 export default function HomeScreen({ navigation }: Props) {
   const tasks = useSelector((state: RootState) => state.tasks);
@@ -48,7 +51,7 @@ export default function HomeScreen({ navigation }: Props) {
             tasks.filter(task =>
                 task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 task.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                task.date.toLowerCase().includes(searchQuery.toLowerCase())
+                moment(task.date).format('DD MMMM, YYYY').toLowerCase().includes(searchQuery.toLowerCase())
             )
         );
     }, 300); // debounce delay of 300ms
@@ -73,6 +76,7 @@ export default function HomeScreen({ navigation }: Props) {
         value={searchQuery}
         mode="outlined"
         outlineColor="transparent"
+        activeOutlineColor= {aputureThemeColor}
         onChangeText={setSearchQuery}
         outlineStyle={styles.searchOutline}
         style={styles.searchInput}
@@ -169,7 +173,7 @@ export default function HomeScreen({ navigation }: Props) {
                 />
                 <Card.Content>
                   <Text>{item.description}</Text>
-                  <Text style={styles.cardDate}>{item.date}</Text>
+                  <Text style={styles.cardDate}>{moment(item.date).format('DD MMMM, YYYY')}</Text>
                 </Card.Content>
               </Card>
             )}

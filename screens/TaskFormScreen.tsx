@@ -12,6 +12,8 @@ interface Props {
   route: any;
 }
 
+const aputureThemeColor = '#ec5f5f';
+
 export default function TaskFormScreen({ navigation, route }: Props) {
   const taskToEdit: Task | undefined = route.params?.task;
   const [title, setTitle] = useState(taskToEdit?.title || '');
@@ -70,9 +72,11 @@ export default function TaskFormScreen({ navigation, route }: Props) {
         {taskToEdit ? 'Edit Task' : 'New Task'}
       </Text>
 
+      <Text style={styles.headers}>Name</Text>
       <TextInput
+        activeOutlineColor={aputureThemeColor}
         mode="outlined"
-        label="Title"
+        placeholder="Name"
         value={title}
         onChangeText={(text) => {
           setTitle(text);
@@ -80,33 +84,40 @@ export default function TaskFormScreen({ navigation, route }: Props) {
         }}
         style={styles.input}
         error={!!titleError}
+        theme={{ colors: { onSurfaceVariant: 'grey'} }}
       />
       {!!titleError && <HelperText type="error">{titleError}</HelperText>}
 
+      <Text style={styles.headers}>Description</Text>
       <TextInput
+        activeOutlineColor={aputureThemeColor}
         mode="outlined"
-        label="Description"
+        placeholder="Description"
         value={description}
         onChangeText={(text) => {
           setDescription(text);
           descriptionError && setDescriptionError('');
         }}
-        style={styles.input}
+        style={styles.descriptionInput}
         multiline
-        numberOfLines={4}
+        numberOfLines={6}
         error={!!descriptionError}
+        theme={{ colors: { onSurfaceVariant: 'grey'} }}
       />
       {!!descriptionError && <HelperText type="error">{descriptionError}</HelperText>}
 
+      <Text style={styles.headers}>Due Date</Text>
       <TouchableOpacity onPress={() => setShowDatePicker(true)} activeOpacity={0.8}>
         <TextInput
+          activeOutlineColor={aputureThemeColor}
           mode="outlined"
-          label="Date"
-          value={date ? moment(date).format('MMM DD, YYYY') : ''}
+          label="Due Date"
+          value={date ? moment(date).format('DD MMMM, YYYY') : ''}
           style={styles.input}
           editable={false}
-          right={<TextInput.Icon icon="calendar" />}
+          right={<TextInput.Icon icon="calendar" onPress={() => setShowDatePicker(true)} />}
           error={!!dateError}
+          theme={{ colors: { onSurfaceVariant: 'grey'} }}
         />
       </TouchableOpacity>
       {!!dateError && <HelperText type="error">{dateError}</HelperText>}
@@ -115,6 +126,7 @@ export default function TaskFormScreen({ navigation, route }: Props) {
         <RNDateTimePicker
           value={date ? new Date(date) : new Date()}
           mode="date"
+          minimumDate={new Date()}
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           onChange={(event, selectedDate) => {
             setShowDatePicker(false);
@@ -128,7 +140,7 @@ export default function TaskFormScreen({ navigation, route }: Props) {
 
       <Button
         mode="contained"
-        buttonColor="#ec5f5f"
+        buttonColor={aputureThemeColor}
         onPress={handleSubmit}
         contentStyle={styles.buttonContent}
         style={styles.button}
@@ -141,6 +153,11 @@ export default function TaskFormScreen({ navigation, route }: Props) {
 }
 
 const styles = StyleSheet.create({
+  headers: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 8,
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -152,6 +169,10 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 16,
+  },
+  descriptionInput: {
+    marginBottom: 16,
+    height: 120,
   },
   buttonContent: {
     paddingVertical: 8,
