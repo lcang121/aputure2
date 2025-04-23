@@ -111,11 +111,11 @@ export default function TaskFormScreen({ navigation, route }: Props) {
         <TextInput
           activeOutlineColor={aputureThemeColor}
           mode="outlined"
-          label="Due Date"
+          placeholder="Due Date"
           value={date ? moment(date).format('DD MMMM, YYYY') : ''}
           style={styles.input}
           editable={false}
-          right={<TextInput.Icon icon="calendar" onPress={() => setShowDatePicker(true)} />}
+          right={<TextInput.Icon icon="calendar" color={aputureThemeColor} onPress={() => setShowDatePicker(true)} />}
           error={!!dateError}
           theme={{ colors: { onSurfaceVariant: 'grey'} }}
         />
